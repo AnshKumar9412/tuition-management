@@ -1,5 +1,6 @@
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
+import { DashboardAnimatedContent } from './DashboardAnimated'
 
 export default async function DashboardPage() {
   const supabase = await createClient()
@@ -29,64 +30,7 @@ export default async function DashboardPage() {
   return (
     <div className="min-h-screen bg-gray-50 px-4 py-10">
       <div className="max-w-3xl mx-auto">
-        <div className="bg-white rounded-2xl shadow-md p-8">
-          <h1 className="text-2xl font-bold mb-1">
-            Welcome, {profile.full_name} 👋
-          </h1>
-          <p className="text-gray-500 mb-6">
-            Role: <span className="font-medium capitalize">{profile.role}</span>
-          </p>
-<a href="/dashboard/notices" className="text-sm text-blue-600 hover:underline block mb-4">
-    📢 View Notices
-  </a>
-
-         {profile.role === 'admin' && (
-  <div>
-    <h2 className="text-lg font-semibold mb-4">Admin Dashboard</h2>
-    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-      <a href="/dashboard/admin/students" className="bg-blue-50 hover:bg-blue-100 rounded-xl p-4 text-center transition">
-        <p className="font-medium text-blue-700">Students</p>
-      </a>
-      <a href="/dashboard/admin/teachers" className="bg-green-50 hover:bg-green-100 rounded-xl p-4 text-center transition">
-        <p className="font-medium text-green-700">Teachers</p>
-      </a>
-      <a href="/dashboard/admin/classes" className="bg-purple-50 hover:bg-purple-100 rounded-xl p-4 text-center transition">
-        <p className="font-medium text-purple-700">Classes</p>
-      </a>
-      <a href="/dashboard/admin/enrollments" className="bg-amber-50 hover:bg-amber-100 rounded-xl p-4 text-center transition">
-        <p className="font-medium text-amber-700">Enrollments</p>
-      </a>
-<a href="/dashboard/admin/fees" className="bg-rose-50 hover:bg-rose-100 rounded-xl p-4 text-center transition">
-  <p className="font-medium text-rose-700">Fees</p>
-</a>
-    </div>
-  </div>
-)}
-          {profile.role === 'teacher' && (
-  <div>
-    <h2 className="text-lg font-semibold mb-4">Teacher Dashboard</h2>
-    <a href="/dashboard/teacher" className="bg-blue-50 hover:bg-blue-100 rounded-xl p-4 inline-block transition">
-      <p className="font-medium text-blue-700">Go to My Classes →</p>
-    </a>
-  </div>
-)}
-         {profile.role === 'student' && (
-  <div>
-    <h2 className="text-lg font-semibold mb-4">Student Dashboard</h2>
-    <a href="/dashboard/student" className="bg-blue-50 hover:bg-blue-100 rounded-xl p-4 inline-block transition">
-      <p className="font-medium text-blue-700">View My Progress →</p>
-    </a>
-  </div>
-)}
-          <form action="/auth/signout" method="post" className="mt-8">
-            <button
-              type="submit"
-              className="text-sm text-red-600 hover:underline"
-            >
-              Log out
-            </button>
-          </form>
-        </div>
+        <DashboardAnimatedContent profile={profile} />
       </div>
     </div>
   )
