@@ -53,6 +53,9 @@ export default async function DashboardPage() {
       <a href="/dashboard/admin/enrollments" className="bg-amber-50 hover:bg-amber-100 rounded-xl p-4 text-center transition">
         <p className="font-medium text-amber-700">Enrollments</p>
       </a>
+<a href="/dashboard/admin/fees" className="bg-rose-50 hover:bg-rose-100 rounded-xl p-4 text-center transition">
+  <p className="font-medium text-rose-700">Fees</p>
+</a>
     </div>
   </div>
 )}
