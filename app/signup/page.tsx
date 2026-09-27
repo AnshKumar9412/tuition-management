@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
+import { motion } from 'framer-motion'
 
 export default function SignupPage() {
   const router = useRouter()
@@ -21,8 +22,6 @@ export default function SignupPage() {
     setMessage('')
     setLoading(true)
 
-    // New signups default to 'student' role.
-    // Admins/teachers should be created or promoted manually — see step 3.
     const { error } = await supabase.auth.signUp({
       email,
       password,
@@ -46,7 +45,12 @@ export default function SignupPage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
-      <div className="w-full max-w-sm bg-white rounded-2xl shadow-md p-8">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4, ease: 'easeOut' }}
+        className="w-full max-w-sm bg-white rounded-2xl shadow-md p-8"
+      >
         <h1 className="text-2xl font-bold text-center mb-1">Create account</h1>
         <p className="text-gray-500 text-center mb-6 text-sm">
           Sign up for the tuition portal
@@ -97,23 +101,33 @@ export default function SignupPage() {
           </div>
 
           {error && (
-            <p className="text-sm text-red-600 bg-red-50 rounded-lg px-3 py-2">
+            <motion.p
+              initial={{ opacity: 0, y: -5 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="text-sm text-red-600 bg-red-50 rounded-lg px-3 py-2"
+            >
               {error}
-            </p>
+            </motion.p>
           )}
           {message && (
-            <p className="text-sm text-green-700 bg-green-50 rounded-lg px-3 py-2">
+            <motion.p
+              initial={{ opacity: 0, y: -5 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="text-sm text-green-700 bg-green-50 rounded-lg px-3 py-2"
+            >
               {message}
-            </p>
+            </motion.p>
           )}
 
-          <button
+          <motion.button
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
             type="submit"
             disabled={loading}
             className="w-full bg-blue-600 text-white rounded-lg py-2 font-medium hover:bg-blue-700 transition disabled:opacity-50"
           >
             {loading ? 'Creating account...' : 'Sign up'}
-          </button>
+          </motion.button>
         </form>
 
         <p className="text-center text-sm text-gray-500 mt-6">
@@ -122,7 +136,7 @@ export default function SignupPage() {
             Log in
           </a>
         </p>
-      </div>
+      </motion.div>
     </div>
   )
 }
