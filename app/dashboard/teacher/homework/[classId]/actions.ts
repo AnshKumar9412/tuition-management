@@ -32,7 +32,7 @@ export async function addHomework(formData: FormData) {
 
 let attachmentUrl: string | null = null
 
-if (file && file.size > 0 {
+if (file && file.size > 0) {
   const fileExt = file.name.split('.').pop()
   const filePath = `${classId}/${Date.now()}-${Math.random().toString(36).slice(2)}.${fileExt}`
 
