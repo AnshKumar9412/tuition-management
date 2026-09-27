@@ -7,7 +7,7 @@ export default async function StudentDashboard() {
   if (!user) redirect('/login')
 
   const { data: profile } = await supabase
-    .from('profiles')
+    .from('profiles')s
     .select('role, full_name')
     .eq('id', user.id)
     .single()
@@ -36,6 +36,17 @@ export default async function StudentDashboard() {
     .eq('student_id', user.id)
     .order('created_at', { ascending: false })
     .limit(10)
+
+  // Homework for enrolled classes
+  const classIds = enrollments?.map((e: any) => e.classes?.id).filter(Boolean) || []
+  const { data: homeworkList } = classIds.length > 0
+    ? await supabase
+        .from('homework')
+        .select('title, description, due_date, classes:class_id(name)')
+        .in('class_id', classIds)
+        .order('created_at', { ascending: false })
+        .limit(10)
+    : { data: [] }
 
   // Fee invoices
   const { data: invoices } = await supabase
@@ -118,6 +129,24 @@ export default async function StudentDashboard() {
             )}
           </div>
         </div>
+
+     {/* Homework */}
+        <div className="bg-white rounded-2xl shadow-md p-6">
+          <h2 className="font-semibold mb-3">Homework</h2>
+          <div className="space-y-2">
+            {homeworkList?.map((h: any, i: number) => (
+              <div key={i} className="border-b border-gray-100 pb-2 text-sm">
+                <p className="font-medium">{h.title} <span className="text-gray-400 font-normal">· {h.classes?.name}</span></p>
+                {h.description && <p className="text-gray-600 mt-0.5">{h.description}</p>}
+                {h.due_date && <p className="text-xs text-gray-400 mt-0.5">Due: {h.due_date}</p>}
+              </div>
+            ))}
+            {(!homeworkList || homeworkList.length === 0) && (
+              <p className="text-gray-400 text-sm">No homework assigned yet.</p>
+            )}
+          </div>
+        </div>
+
 
         {/* Fees */}
         <div className="bg-white rounded-2xl shadow-md p-6">

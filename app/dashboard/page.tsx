@@ -36,6 +36,9 @@ export default async function DashboardPage() {
           <p className="text-gray-500 mb-6">
             Role: <span className="font-medium capitalize">{profile.role}</span>
           </p>
+<a href="/dashboard/notices" className="text-sm text-blue-600 hover:underline block mb-4">
+    📢 View Notices
+  </a>
 
          {profile.role === 'admin' && (
   <div>

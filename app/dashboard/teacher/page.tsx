@@ -44,6 +44,10 @@ export default async function TeacherDashboard() {
                   className="text-sm bg-green-50 text-green-700 rounded-lg px-3 py-1.5 hover:bg-green-100">
                   Enter Marks
                 </a>
+<a href={`/dashboard/teacher/homework/${c.id}`}
+  className="text-sm bg-amber-50 text-amber-700 rounded-lg px-3 py-1.5 hover:bg-amber-100">
+  Homework
+</a>
               </div>
             </div>
           ))}
