@@ -42,7 +42,7 @@ export function MarksBarChart({ data }: { data: MarksChartData[] }) {
         <CartesianGrid strokeDasharray="3 3" stroke="#eee" />
         <XAxis dataKey="name" tick={{ fontSize: 11 }} interval={0} angle={-20} textAnchor="end" height={60} />
         <YAxis domain={[0, 100]} tick={{ fontSize: 11 }} />
-        <Tooltip formatter={(value: number) => [`${value}%`, 'Score']} />
+       <Tooltip formatter={(value) => [`${value}%`, 'Score']} />
         <Bar dataKey="percentage" fill="#3b82f6" radius={[4, 4, 0, 0]} />
       </BarChart>
     </ResponsiveContainer>
