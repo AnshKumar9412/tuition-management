@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
+import { motion } from 'framer-motion'
 
 export default function LoginPage() {
   const router = useRouter()
@@ -36,7 +37,12 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
-      <div className="w-full max-w-sm bg-white rounded-2xl shadow-md p-8">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4, ease: 'easeOut' }}
+        className="w-full max-w-sm bg-white rounded-2xl shadow-md p-8"
+      >
         <h1 className="text-2xl font-bold text-center mb-1">Welcome back</h1>
         <p className="text-gray-500 text-center mb-6 text-sm">
           Log in to your tuition portal
@@ -72,18 +78,24 @@ export default function LoginPage() {
           </div>
 
           {error && (
-            <p className="text-sm text-red-600 bg-red-50 rounded-lg px-3 py-2">
+            <motion.p
+              initial={{ opacity: 0, y: -5 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="text-sm text-red-600 bg-red-50 rounded-lg px-3 py-2"
+            >
               {error}
-            </p>
+            </motion.p>
           )}
 
-          <button
+          <motion.button
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
             type="submit"
             disabled={loading}
             className="w-full bg-blue-600 text-white rounded-lg py-2 font-medium hover:bg-blue-700 transition disabled:opacity-50"
           >
             {loading ? 'Logging in...' : 'Log in'}
-          </button>
+          </motion.button>
         </form>
 
         <p className="text-center text-sm text-gray-500 mt-6">
@@ -92,7 +104,7 @@ export default function LoginPage() {
             Sign up
           </a>
         </p>
-      </div>
+      </motion.div>
     </div>
   )
 }
