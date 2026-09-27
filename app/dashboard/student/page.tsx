@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import { ReportCardDownloadButton } from './report-card/ReportCardPDF'
+import { MarksBarChart, AttendancePieChart } from './ProgressCharts'
 
 export default async function StudentDashboard() {
   const supabase = await createClient()
@@ -49,6 +50,25 @@ export default async function StudentDashboard() {
     total: allAttendance?.length || 0,
   }
 
+  // Shape data for charts
+  const marksChartData = (marks || [])
+    .filter((m: any) => m.exams?.max_marks)
+    .map((m: any) => ({
+      name: m.exams?.title || 'Exam',
+      percentage: Math.round((m.marks_obtained / m.exams.max_marks) * 100),
+    }))
+    .reverse() // show oldest to newest, left to right
+
+  const attendanceCounts = { Present: 0, Absent: 0, Late: 0, Excused: 0 }
+  allAttendance?.forEach((a: any) => {
+    if (a.status === 'present') attendanceCounts.Present++
+    else if (a.status === 'absent') attendanceCounts.Absent++
+    else if (a.status === 'late') attendanceCounts.Late++
+    else if (a.status === 'excused') attendanceCounts.Excused++
+  })
+  const attendanceChartData = Object.entries(attendanceCounts)
+    .map(([name, value]) => ({ name, value }))
+    .filter((d) => d.value > 0)
 
   // Homework for enrolled classes
   const classIds = enrollments?.map((e: any) => e.classes?.id).filter(Boolean) || []
@@ -118,6 +138,17 @@ export default async function StudentDashboard() {
             {(!enrollments || enrollments.length === 0) && (
               <p className="text-gray-400 text-sm">You're not enrolled in any classes yet.</p>
             )}
+          </div>
+        </div>
+        {/* Progress Charts */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="bg-white rounded-2xl shadow-md p-6">
+            <h2 className="font-semibold mb-3">Marks Trend</h2>
+            <MarksBarChart data={marksChartData} />
+          </div>
+          <div className="bg-white rounded-2xl shadow-md p-6">
+            <h2 className="font-semibold mb-3">Attendance Breakdown</h2>
+            <AttendancePieChart data={attendanceChartData} />
           </div>
         </div>
 
