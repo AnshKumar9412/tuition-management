@@ -67,15 +67,14 @@ export default async function DashboardPage() {
     </a>
   </div>
 )}
-          {profile.role === 'student' && (
-            <div>
-              <h2 className="text-lg font-semibold mb-2">Student Dashboard</h2>
-              <p className="text-gray-600">
-                View your attendance, marks, fees, and homework here.
-              </p>
-            </div>
-          )}
-
+         {profile.role === 'student' && (
+  <div>
+    <h2 className="text-lg font-semibold mb-4">Student Dashboard</h2>
+    <a href="/dashboard/student" className="bg-blue-50 hover:bg-blue-100 rounded-xl p-4 inline-block transition">
+      <p className="font-medium text-blue-700">View My Progress →</p>
+    </a>
+  </div>
+)}
           <form action="/auth/signout" method="post" className="mt-8">
             <button
               type="submit"
