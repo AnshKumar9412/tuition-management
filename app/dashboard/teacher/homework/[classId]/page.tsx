@@ -50,10 +50,10 @@ export default async function HomeworkPage({
               <input name="dueDate" type="date" className="rounded-lg border border-gray-300 px-3 py-1.5 text-sm" />
             </div>
             <div>
-               <label classname="block text-sm text-grey-700 mb-1">Attach file (PDF, image, etc. - optional)</label>
-               <input name="file" type="file" accept=".pdf,.doc,.docx,.png,.jpeg"
-                 class name="w-full text-sm border border-grey-300 rounded-lg px-3 py-2" />
-            </div>
+   <label className="block text-sm text-gray-700 mb-1">Attach file (PDF, image, etc. - optional)</label>
+   <input name="file" type="file" accept=".pdf,.doc,.docx,.png,.jpeg,.jpg"
+     className="w-full text-sm border border-gray-300 rounded-lg px-3 py-2" />
+</div>
             <button type="submit" className="bg-blue-600 text-white rounded-lg px-6 py-2 text-sm font-medium hover:bg-blue-700">
               Assign Homework
             </button>
