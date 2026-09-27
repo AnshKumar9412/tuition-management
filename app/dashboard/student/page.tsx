@@ -1,5 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
+import { ReportCardDownloadButton } from './report-card/ReportCardPDF'
 
 export default async function StudentDashboard() {
   const supabase = await createClient()
@@ -36,6 +37,18 @@ export default async function StudentDashboard() {
     .eq('student_id', user.id)
     .order('created_at', { ascending: false })
     .limit(10)
+
+  // Attendance summary for report card
+  const { data: allAttendance } = await supabase
+    .from('attendance')
+    .select('status')
+    .eq('student_id', user.id)
+
+  const attendanceSummary = {
+    present: allAttendance?.filter((a) => a.status === 'present' || a.status === 'late').length || 0,
+    total: allAttendance?.length || 0,
+  }
+
 
   // Homework for enrolled classes
   const classIds = enrollments?.map((e: any) => e.classes?.id).filter(Boolean) || []
@@ -77,6 +90,20 @@ export default async function StudentDashboard() {
             ← Back to dashboard
           </a>
           <h1 className="text-2xl font-bold mt-2">My Progress</h1>
+        </div>
+        <div>
+          <ReportCardDownloadButton
+            studentName={profile.full_name}
+            marks={(marks || []).map((m: any) => ({
+              examTitle: m.exams?.title || '',
+              subject: m.exams?.subject || '',
+              marksObtained: m.marks_obtained,
+              maxMarks: m.exams?.max_marks || 100,
+              grade: m.grade,
+            }))}
+            attendanceSummary={attendanceSummary}
+            generatedDate={new Date().toLocaleDateString()}
+          />
         </div>
 
         {/* My classes */}
