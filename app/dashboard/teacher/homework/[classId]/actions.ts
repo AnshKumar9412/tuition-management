@@ -28,6 +28,28 @@ export async function addHomework(formData: FormData) {
   const title = formData.get('title') as string
   const description = formData.get('description') as string
   const dueDate = formData.get('dueDate') as string
+  const file = formData.get('file') as File | null
+
+let attachmentUrl: string | null = null
+
+if (file && file.size > 0 {
+  const fileExt = file.name.split('.').pop()
+  const filePath = `${classId}/${Date.now()}-${Math.random().toString(36).slice(2)}.${fileExt}`
+
+  const { error: uploadError } = await supabase.storage
+    .from('homework-files')
+    .upload(filePath, file)
+
+if (uploadError) {
+   throw new Error(`File upload failed: ${uploadError.message}`)
+}
+
+const { data: publicUrlData } = supabase.storage
+   .from('homework-files')
+   .getPublicUrl(filePath)
+
+attachmentUrl = publicUrlData.publicUrl
+}
 
   const { error } = await supabase.from('homework').insert({
     class_id: classId,
@@ -35,6 +57,7 @@ export async function addHomework(formData: FormData) {
     description: description || null,
     due_date: dueDate || null,
     assigned_by: teacherId,
+    attachment_url: attachmentUrl, 
   })
 
   if (error) throw new Error(error.message)

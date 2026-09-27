@@ -23,7 +23,7 @@ export default async function HomeworkPage({
 
   const { data: homeworkList } = await supabase
     .from('homework')
-    .select('id, title, description, due_date, created_at')
+    .select('id, title, description, due_date, attachment_url, created_at')
     .eq('class_id', classId)
     .order('created_at', { ascending: false })
 
@@ -49,6 +49,11 @@ export default async function HomeworkPage({
               <label className="text-sm text-gray-700">Due date:</label>
               <input name="dueDate" type="date" className="rounded-lg border border-gray-300 px-3 py-1.5 text-sm" />
             </div>
+            <div>
+               <label classname="block text-sm text-grey-700 mb-1">Attach file (PDF, image, etc. - optional)</label>
+               <input name="file" type="file" accept=".pdf,.doc,.docx,.png,.jpeg"
+                 class name="w-full text-sm border border-grey-300 rounded-lg px-3 py-2" />
+            </div>
             <button type="submit" className="bg-blue-600 text-white rounded-lg px-6 py-2 text-sm font-medium hover:bg-blue-700">
               Assign Homework
             </button>
@@ -65,6 +70,12 @@ export default async function HomeworkPage({
                     <p className="font-medium">{h.title}</p>
                     {h.description && <p className="text-sm text-gray-600 mt-1">{h.description}</p>}
                     {h.due_date && <p className="text-xs text-gray-400 mt-2">Due: {h.due_date}</p>}
+                    {h.attachment_url && (
+                     <a href={h.attachment_url} target="_blank" rel="noopener noreferrer"
+                     className="text-xs text-blue-600 hover:underline mt-2 inline-block">
+                   📎 View Attachment
+  </a>
+)}
                   </div>
                   <form action={async () => {
                     'use server'

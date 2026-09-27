@@ -148,6 +148,12 @@ export function StudentDashboardAnimated({
                 <p className="font-medium">{h.title} <span className="text-gray-400 font-normal">· {h.classes?.name}</span></p>
                 {h.description && <p className="text-gray-600 mt-0.5">{h.description}</p>}
                 {h.due_date && <p className="text-xs text-gray-400 mt-0.5">Due: {h.due_date}</p>}
+{h.attachment_url && (
+  <a href={h.attachment_url} target="_blank" rel="noopener noreferrer"
+    className="text-blue-600 hover:underline text-xs mt-1 inline-block">
+    📎 Download Attachment
+  </a>
+)}
               </div>
             ))}
             {homeworkList.length === 0 && (

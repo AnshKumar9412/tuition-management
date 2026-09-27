@@ -45,7 +45,7 @@ export default async function StudentDashboard() {
   const { data: homeworkList } = classIds.length > 0
     ? await supabase
         .from('homework')
-        .select('title, description, due_date, classes:class_id(name)')
+        .select('title, description, due_date, attachment_url, classes:class_id(name)')
         .in('class_id', classIds)
         .order('created_at', { ascending: false })
         .limit(10)
